@@ -1,10 +1,12 @@
 let gridContainer = document.querySelector(".gridContainer")
-let gridSize = 16;
-let margin = 1;
+let gridSize = 50;
 
-//grid square size
+//grid square size 
 let gridWidth = gridContainer.offsetWidth;
-let squareWidth = gridWidth / gridSize; 
+let squareWidth = (gridWidth-gridSize) / gridSize; 
+let gridHeight = gridContainer.offsetHeight;
+let squareHeight = (gridHeight-gridSize) / gridSize; 
+
 let gridSquare;
 
 //grid
@@ -13,9 +15,7 @@ for (let i = 0; i < gridSize; i++){
         gridSquare = document.createElement('div');
         gridSquare.classList.add("gridSquare");
         gridContainer.appendChild(gridSquare);
-        gridSquare.setAttribute("style",`flex-basis: ${squareWidth}px;`)
+        gridSquare.setAttribute("style",`flex-basis: ${squareWidth}px; height: ${squareHeight}`);
     }
 }
-let squares = document.querySelectorAll('.gridSquare');
-
 

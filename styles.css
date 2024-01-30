@@ -4,13 +4,15 @@
 }
 html, body {
     height:100%;
+    background-color: rgba(172, 255, 47, 0.353);
 }
 .playContainer{
-    background-color: sandybrown;
-    width: 300px;
-    height: 300px;
+    width: 600px;
+    height: 600px;
     margin: auto;
     display: flex;
+    border: 3px solid aqua;
+
 }
 .mainContainer{
     display: flex;
@@ -19,21 +21,19 @@ html, body {
 }
 .gridContainer{
     flex: 1;
-    margin: 10px;
     background-color: aqua;
-    height: 100% - 100px;
-    width: 100%;
-}
-.gridContainer{
+    height: inherit;
+    width: inherit;
     display: flex;
     flex-wrap: wrap;
-
+    gap: 1px; 
 }
 .gridSquare{
+    color: white;
     background-color: black;
     flex-grow: 0;
     flex-shrink: 0;
-    border: 1px solid white;
+    font-size: 1px;
 }
 
 .gridSquareColorChange{
