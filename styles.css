@@ -24,16 +24,20 @@ html, body {
     justify-content: center;
     align-items: center;
 }
-p{
+.header p{
    font-size: 30px;
    color:white;
 }
-
+.panelControls{
+    margin: 20px;
+    padding: 10px;
+}
 .panel{
     width: 300px;
     height: 600px;
     display: flex;
     border: 3px solid grey;
+    flex-direction: column;
 }
 .childContainer{
     display: flex;
@@ -49,12 +53,10 @@ p{
     min-height: 100%;
 }
 .gridContainer{
-    flex: 1;
     height: inherit;
     width: inherit;
     display: flex;
     flex-wrap: wrap;
-    gap: 0px 0px; 
 }
 .gridSquare{
     color: white;
@@ -69,9 +71,7 @@ p{
 .gridSquareColorChange{
     background-color: white;
 }
-
 .selector {
-    user-drag: none;
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;

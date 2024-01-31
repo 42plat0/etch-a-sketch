@@ -7,19 +7,25 @@
     <title>Etch-a-Sketch</title>
 </head>
 <body>
-    <div class="mainContainer" draggable="false">
-        <div class="childContainer" draggable="false">
+    <div class="mainContainer" >
+        <div class="childContainer" >
             <div class="header">
                 <p>
                     Etch-a-Sketch
-
                 </p>
             </div>
             <div class="panel">
-            
+                <button class="panelControls" id="rainbow">RAINING CANDY</button>
+
+                <button class="panelControls" id="reset">RESET</button>
+
+                <input type="range" class="panelControls" id="gridSizeInput" name="gridSize"
+                min="1" max="60" value="16" style="margin-bottom: 0;">
+                    <p class="panelControls" 
+                    style="margin-top: 0; text-align:center;">Grid Size: <output id="gridSizeDisplay"></output></p>
             </div>
-            <div class="playContainer" draggable="false">
-                <div class="gridContainer" draggable="false"></div>
+            <div class="playContainer" >
+                <div class="gridContainer" ></div>
             </div>
     
         </div>
