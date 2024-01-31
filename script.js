@@ -3,14 +3,16 @@ let resetBtn = document.querySelector("#reset");
 let inputGridSize = document.querySelector("#gridSizeInput")
 let gridSizeDisplay = document.querySelector("#gridSizeDisplay")
 let rainbowColor = document.querySelector("#rainbow")
+
+let gridToggle = document.querySelector("#gridToggle");
+
 //grid size
 let gridSize = inputGridSize.value;;
 
 let gridHeight = gridContainer.offsetHeight;
-let gridWidth = gridContainer.offsetWidth- 0.34;
+let gridWidth = gridContainer.offsetWidth - 0.34;
 
 let gridSquare;
-
 
 
 //grid
@@ -26,11 +28,13 @@ function createGrid(sizeOfGrid){
         //create div, add class, 
         gridSquare = document.createElement('div');
         gridSquare.classList.add("gridSquare");
+        gridSquare.classList.add("gridOn");
         //disables mozillas draggability of elements
         gridSquare.classList.add("selector");
 
         gridContainer.appendChild(gridSquare);
         gridSquare.setAttribute("style",`flex-basis: ${squareWidth}px; height: ${squareHeight}; `);
+    
     }
 }}
 
@@ -46,13 +50,28 @@ function removeAllChildNodes(parent) {
 //mouse button[0] is down
 let isDown = false;
 
-//rainbow mode toggle
+//grid line toggler
+let gridOn = true;
+function gridLineToggler(){
+    let gridArray = Array.from(document.querySelectorAll(".gridSquare"));
+    if(gridOn){
+        gridOn = false;
+        for(let i = 0; i < gridArray.length; i++){
+            gridArray[i].classList.remove("gridOn");
+        }
+    }
+    else{
+        gridOn = true;
+        for(let i = 0; i < gridArray.length; i++){
+            gridArray[i].classList.add("gridOn");
+        }
+    }
+}
 
 
 //painting
 function paintGrid (){
     let rainbowMode = false;
-    let rainbowColors = ["#e81416", "#ffa500", "#faeb36", "#79c314","#487de7", "#4b369d","#70369d"]
 
     rainbowColor.addEventListener("click",()=>{
         rainbowMode = true;
@@ -60,7 +79,11 @@ function paintGrid (){
     })
     //grid square array
     let gridArray = Array.from(document.querySelectorAll(".gridSquare"));
+
     for(let i = 0; i < gridArray.length; i++){
+        
+
+        //painting with mouse holded
         gridArray[i].addEventListener("mousedown", (e)=>{
             isDown = true;
             if(e.button == 0 && !rainbowMode){
@@ -86,10 +109,13 @@ function paintGrid (){
         resetBtn.addEventListener("click", ()=>{
             gridArray[i].classList.remove("gridSquareColorChange")
             gridArray[i].style.backgroundColor = "";
-
+            number = 0
+            console.log(number);
         })
     }
 }
+
+
 paintGrid();
 
 //after cursor leaves stop painting
@@ -97,7 +123,6 @@ let playContainer = document.querySelector(".playContainer");
 playContainer.addEventListener("mouseleave", ()=>{
     isDown = false;
 })
-
 
 //select grid size
 gridSizeDisplay.textContent = inputGridSize.value;
@@ -110,4 +135,11 @@ inputGridSize.addEventListener("change", (e)=>{
     createGrid(gridSize);
     setTimeout(paintGrid(), 500);
 })
+
+//grid line toggler
+gridToggle.addEventListener("click", ()=>{
+    gridLineToggler();
+})
+
+
 

@@ -45,8 +45,8 @@ html, body {
     flex-wrap: wrap;
     width: 950px;
     justify-content: space-between;
-
 }
+
 .mainContainer{
     display: flex;
     justify-content: space-evenly;
@@ -61,11 +61,13 @@ html, body {
 .gridSquare{
     color: white;
     background-color: black;
-    flex-grow: 0;
+    flex-grow: 1;
     flex-shrink: 0;
-    font-size: 1px;
+}
+.gridOn{
     border-bottom: 1px solid gray;
     border-right: 1px solid gray;
+    flex-grow: 0 !important;
 }
 
 .gridSquareColorChange{
