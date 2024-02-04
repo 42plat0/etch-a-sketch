@@ -3,39 +3,64 @@ let resetBtn = document.querySelector("#reset");
 let inputGridSize = document.querySelector("#gridSizeInput")
 let gridSizeDisplay = document.querySelector("#gridSizeDisplay")
 let rainbowColor = document.querySelector("#rainbow")
-
 let gridToggle = document.querySelector("#gridToggle");
+
+let shadingToggle = document.querySelector("#shadingToggle")
+let lighteningToggle = document.querySelector("#lighteningToggle")
+
+let primaryColor = document.querySelector("#primaryPaintColor");
+let chosenBackgroundColor = document.querySelector("#backgroundPaintColor")
 
 //grid size
 let gridSize = inputGridSize.value;;
-
-let gridHeight = gridContainer.offsetHeight;
-let gridWidth = gridContainer.offsetWidth - 0.34;
-
+let gridWidth = gridContainer.clientWidth
 let gridSquare;
 
+//mouse button[0] is down
+let isDown = false;
+
+//button to shaden grid squares
+let shadingState = false;
+function shadingToggler(element){
+    if (!shadingState && !lighteningState){
+        shadingState = true;
+        element.classList.add("btnOn");
+    }
+    else{
+        shadingState = false;
+        element.classList.remove("btnOn");
+    }
+}
+//button to lighten grid squares
+let lighteningState = false;
+function lighteningToggler(element){
+    if (!lighteningState && !shadingState){
+        lighteningState = true;
+        element.classList.add("btnOn");
+    }
+    else{
+        lighteningState = false;
+        element.classList.remove("btnOn");
+    }
+}
 
 //grid
 function createGrid(sizeOfGrid){
-    //grid square size 
-
-    let squareWidth = (gridWidth-gridSize) / gridSize; 
-
-    let squareHeight = (gridHeight-gridSize) / gridSize; 
-
+    //grid square size - division and multipl for 2 decimal numbers - minus two to account for borders
+    let squareWidth = Math.floor((((gridWidth) / sizeOfGrid) - 2) * 10)/ 10; 
     for (let i = 0; i < sizeOfGrid; i++){
-    for(let j = 0; j < sizeOfGrid; j++){
-        //create div, add class, 
-        gridSquare = document.createElement('div');
-        gridSquare.classList.add("gridSquare");
-        gridSquare.classList.add("gridOn");
-        //disables mozillas draggability of elements
-        gridSquare.classList.add("selector");
+        for(let j = 0; j < sizeOfGrid; j++){
+            //create div, add class, 
+            gridSquare = document.createElement('div');
+            gridSquare.classList.add("gridSquare");
+            gridSquare.classList.add("gridOn");
+            //disables mozillas draggability of elements
+            gridSquare.classList.add("selector");
 
-        gridContainer.appendChild(gridSquare);
-        gridSquare.setAttribute("style",`flex-basis: ${squareWidth}px; height: ${squareHeight}; `);
-    
-    }
+            gridContainer.appendChild(gridSquare);
+            gridSquare.setAttribute("style",`flex-basis: ${squareWidth}px;`);
+            gridSquare.style.backgroundColor = chosenBackgroundColor.value;
+        }
 }}
 
 createGrid(gridSize);
@@ -46,62 +71,92 @@ function removeAllChildNodes(parent) {
         parent.removeChild(parent.firstChild);
     }
 }
-
-//mouse button[0] is down
-let isDown = false;
+//let user choose background color
+function backgroundColorChange (target){
+    chosenBackgroundColor.addEventListener("change", ()=>{
+        target.style.backgroundColor = chosenBackgroundColor.value;
+    })
+}
 
 //grid line toggler
 let gridOn = true;
-function gridLineToggler(){
+function gridLineToggler(element){
     let gridArray = Array.from(document.querySelectorAll(".gridSquare"));
-    if(gridOn){
+    if(gridOn && !gridChanged){
         gridOn = false;
         for(let i = 0; i < gridArray.length; i++){
             gridArray[i].classList.remove("gridOn");
+            //when grid is on, when toggling grid off - the size is calculated without taking borders in mind
+            squareWidth = Math.floor((((gridWidth) / gridSize)) * 10)/ 10; 
+            gridArray[i].style.flexBasis = `${squareWidth}px`;
         }
     }
     else{
         gridOn = true;
         for(let i = 0; i < gridArray.length; i++){
             gridArray[i].classList.add("gridOn");
+            //size claculated based on border size times 2
+            squareWidth = Math.floor((((gridWidth) / gridSize) - 2) * 10)/ 10; 
+            gridArray[i].style.flexBasis = `${squareWidth}px`;
+
         }
     }
 }
-
+//rainbow coloring mode toggler
+let rainbowMode = false;
+function rainbowModeColoring(element){
+    if (!rainbowMode){
+        rainbowMode = true;
+        element.classList.add("btnOn");
+    }
+    else{
+        rainbowMode = false;
+        element.classList.remove("btnOn");
+    }
+}
+rainbowColor.addEventListener("click",()=>{
+    rainbowModeColoring(rainbowColor);
+    console.log("rainbow activated")
+})
 
 //painting
 function paintGrid (){
-    let rainbowMode = false;
-
-    rainbowColor.addEventListener("click",()=>{
-        rainbowMode = true;
-        console.log("rainbow activated")
-    })
     //grid square array
     let gridArray = Array.from(document.querySelectorAll(".gridSquare"));
-
     for(let i = 0; i < gridArray.length; i++){
-        
-
+        //change background color
+        backgroundColorChange(gridArray[i]); //!!!!!!!!!!! CAUSING LAG
         //painting with mouse holded
+        gridArray[i].style.backgroundColor = chosenBackgroundColor;
         gridArray[i].addEventListener("mousedown", (e)=>{
+            let randomColorNumber = Math.floor(Math.random() * 361);
             isDown = true;
             if(e.button == 0 && !rainbowMode){
-                // gridArray[i].style.backgroundColor = "white";
-                gridArray[i].classList.add("gridSquareColorChange")
+                if(shadingState){
+                    shading(gridArray[i])
+                }else{
+                    gridArray[i].style.backgroundColor = primaryColor.value;
+                }
+
+            }
+            else{
+                gridArray[i].style.backgroundColor = `hsl(${randomColorNumber}, 100%, 65%)`;
             }
         })
         gridArray[i].addEventListener("mouseup", ()=>{
             isDown = false;
         })
-        gridArray[i].addEventListener("mouseenter", ()=>{
+        gridArray[i].addEventListener("mouseenter", (e)=>{
             if(isDown){
                 if(rainbowMode){
                     let randomColorNumber = Math.floor(Math.random() * 361);
-                    gridArray[i].style.backgroundColor = `hsl(${randomColorNumber}, 100%, 60%)`;
+                    gridArray[i].style.backgroundColor = `hsl(${randomColorNumber}, 100%, 65%)`;
                 }
-                else{
-                    gridArray[i].classList.add("gridSquareColorChange")
+                else if(shadingState){
+
+                    console.log(gridArray[i].style.backgroundColor)
+                }else{
+                    gridArray[i].style.backgroundColor = primaryColor.value;
                 }
             }
         })
@@ -109,37 +164,74 @@ function paintGrid (){
         resetBtn.addEventListener("click", ()=>{
             gridArray[i].classList.remove("gridSquareColorChange")
             gridArray[i].style.backgroundColor = "";
-            number = 0
-            console.log(number);
+            gridArray[i].style.backgroundColor = chosenBackgroundColor.value;
         })
     }
 }
-
-
 paintGrid();
-
 //after cursor leaves stop painting
 let playContainer = document.querySelector(".playContainer");
 playContainer.addEventListener("mouseleave", ()=>{
     isDown = false;
 })
-
+//avoids deleting grid lines with grid size change
+let gridChanged = false;
 //select grid size
 gridSizeDisplay.textContent = inputGridSize.value;
 inputGridSize.addEventListener("input", (e)=>{
     gridSizeDisplay.textContent = e.target.value;
 })
 inputGridSize.addEventListener("change", (e)=>{
+    gridChanged = true;
     setTimeout(removeAllChildNodes(gridContainer), 500);
     gridSize = inputGridSize.value;
     createGrid(gridSize);
     setTimeout(paintGrid(), 500);
+            //????????????????????????
+        //after grid size change, unpress grid line button
+        gridLineToggler(gridToggle);
+            //????????????????????????
 })
 
 //grid line toggler
 gridToggle.addEventListener("click", ()=>{
-    gridLineToggler();
+    //avoids deleting grid lines with grid size change
+    gridChanged = false;
+    if(gridOn){
+        gridToggle.classList.add("btnOn");
+    }else{
+        gridToggle.classList.remove("btnOn");
+    }
+    gridLineToggler(gridToggle);
+})
+
+
+shadingToggle.addEventListener("click", ()=>{
+    shadingToggler(shadingToggle)
+})
+
+lighteningToggle.addEventListener("click", ()=>{
+    lighteningToggler(lighteningToggle)
 })
 
 
 
+
+
+
+function shading(square){
+    let numberReg = /\d+/g;
+    let color = square.style.backgroundColor.match(numberReg);
+
+    square.addEventListener("click", (element)=>{
+        let firstColor, secondColor, thirdColor;
+
+        let numberArray = color.map((x) => parseInt(x))
+
+        firstColor = numberArray[0] / 2; 
+        secondColor = numberArray[1] / 2;
+        thirdColor = numberArray[2] / 2;
+
+        element.target.style.backgroundColor = `rgb(${(firstColor * numberArray[0])}, ${(secondColor * numberArray[1])}, ${(thirdColor * numberArray[2])})`;
+    })
+}

@@ -15,19 +15,30 @@
                 </p>
             </div>
             <div class="panel">
+                <div class="panelControls colorPicker">
+                    <input type="color" id="primaryPaintColor" value="#ffffff">
+                    <p>PAINT COLOR</p>
+                </div>
+                <div class="panelControls colorPicker">
+                    <input type="color" id="backgroundPaintColor" value="#000000">
+                    <p >BACKGROUND COLOR</p>
+                </div>
                 <button class="panelControls" id="rainbow">RAINING CANDY</button>
 
                 <button class="panelControls" id="reset">RESET</button>
 
                 <button class="panelControls" id="gridToggle">GRID LINES</button>
 
+                <button class="panelControls" id="shadingToggle">Shading</button>
+                <button class="panelControls" id="lighteningToggle">Lightening</button>
+
                 <input type="range" class="panelControls" id="gridSizeInput" name="gridSize"
-                min="1" max="60" value="16" style="margin-bottom: 0;">
+                min="1" max="50" value="16" style="margin-bottom: 0;">
                     <p class="panelControls" 
-                    style="margin-top: 0; text-align:center;">Grid Size: <output id="gridSizeDisplay"></output></p>
+                    style="margin-top: 0; text-align:center;color:white;">Grid Size: <output id="gridSizeDisplay"></output></p>
             </div>
-            <div class="playContainer" >
-                <div class="gridContainer" ></div>
+            <div class="playContainer">
+                <div class="gridContainer"></div>
             </div>
     
         </div>

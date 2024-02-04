@@ -1,20 +1,15 @@
 *{
     margin: 0;
     padding: 0;
+    color: red;
 }
 html, body {
     height:100%;
 }
 .mainContainer{
-    background-color: rgba(0, 0, 0, 0.828);
+    background-color: salmon;
+}
 
-}
-.playContainer{
-    width: 600px;
-    height: 600px;
-    display: flex;
-    border: 3px solid grey;
-}
 .header{
     width: 100%;
     height: 100px;
@@ -34,7 +29,7 @@ html, body {
 }
 .panel{
     width: 300px;
-    height: 600px;
+    height: 700px;
     display: flex;
     border: 3px solid grey;
     flex-direction: column;
@@ -52,6 +47,12 @@ html, body {
     justify-content: space-evenly;
     min-height: 100%;
 }
+.playContainer{
+    height: 600px;
+    width: 600px;
+    border: 3px solid grey;
+    display: flex;
+}
 .gridContainer{
     height: inherit;
     width: inherit;
@@ -59,15 +60,40 @@ html, body {
     flex-wrap: wrap;
 }
 .gridSquare{
-    color: white;
-    background-color: black;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
+}
+.panelControls > input{
+    flex: 1;
+}
+.panelControls > p{
+    flex: 2;
+    margin: auto;
+    margin-left: 20px;
+}
+.colorPicker > button{
+    
+    border: none;
+    cursor: pointer;
+        appearance: none;
+        background-color: inherit;
+}
+.colorPicker > button > img{
+    width: 20px;
+    height: 20px;
+}
+.colorPicker{
+    display:flex;
+    justify-content: space-between;
+}
+.colorPicker:nth-child(1){
+    margin-bottom: 0;
+}
+.colorPicker:nth-child(2){
+    margin-top: 0;
 }
 .gridOn{
-    border-bottom: 1px solid gray;
-    border-right: 1px solid gray;
-    flex-grow: 0 !important;
+    border: 0.5px solid gray;
 }
 
 .gridSquareColorChange{
@@ -79,4 +105,7 @@ html, body {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+.btnOn{
+    background-color: black;
 }
