@@ -1,13 +1,12 @@
+//DOM elements
 let gridContainer = document.querySelector(".gridContainer")
 let resetBtn = document.querySelector("#reset");
 let inputGridSize = document.querySelector("#gridSizeInput")
 let gridSizeDisplay = document.querySelector("#gridSizeDisplay")
 let rainbowColor = document.querySelector("#rainbow")
 let gridToggle = document.querySelector("#gridToggle");
-
 let shadingToggle = document.querySelector("#shadingToggle")
 let lighteningToggle = document.querySelector("#lighteningToggle")
-
 let primaryColor = document.querySelector("#primaryPaintColor");
 let chosenBackgroundColor = document.querySelector("#backgroundPaintColor")
 
@@ -16,6 +15,9 @@ let gridSize = inputGridSize.value;;
 let gridWidth = gridContainer.clientWidth
 let gridSquare;
 
+//shading and tinting factors - 1st number
+const shadingFactor = 30 / 100;
+const tintFactor = 30 / 100;
 //mouse button[0] is down
 let isDown = false;
 
@@ -26,6 +28,7 @@ function shadingToggler(element){
         shadingState = true;
         element.classList.add("btnOn");
 
+        //cant have rainbow mode or button on
         rainbowMode = false;
         rainbowModeColoring(rainbowColor);
     }
@@ -42,7 +45,7 @@ function lighteningToggler(element){
     if (!lighteningState && !shadingState){
         lighteningState = true;
         element.classList.add("btnOn");
-
+        //cant have rainbow mode or button on
         rainbowMode = false;
         rainbowModeColoring(rainbowColor);
     }
@@ -93,6 +96,7 @@ function gridLineToggler(element){
     if(gridOn && !gridChanged){
         gridOn = false;
         for(let i = 0; i < gridArray.length; i++){
+            //removes grid lines
             gridArray[i].classList.remove("gridOn");
             //when grid is on, when toggling grid off - the size is calculated without taking borders in mind
             squareWidth = Math.floor((((gridWidth) / gridSize)) * 10)/ 10; 
@@ -123,10 +127,10 @@ function rainbowModeColoring(element){
 
     }
 }
+//rainbow color paint toggler
 rainbowColor.addEventListener("click",()=>{
         rainbowModeColoring(rainbowColor);
         console.log("rainbow activated")
-
 })
 
 //painting
@@ -139,31 +143,32 @@ function paintGrid (){
         //painting with mouse holded
         gridArray[i].style.backgroundColor = chosenBackgroundColor;
         gridArray[i].addEventListener("mousedown", (e)=>{
-            let randomColorNumber = Math.floor(Math.random() * 361);
-            isDown = true;
-            if(e.button == 0 && !rainbowMode){
-                if(shadingState){
-                    //prevents from painting
-                    isDown = false;
-
-                    lighteningState = false;
-                    rainbowMode = false;
-                    shading(gridArray[i])
-                }
-                else if(lighteningState){
-                    //prevents from painting
-                    isDown = false;
-
-                    shadingState = false;
-                    rainbowMode = false;
-                    lightening(gridArray[i]);
+            //only left mouse click works to paint
+            if(e.button === 0){
+                let randomColorNumber = Math.floor(Math.random() * 361);
+                    isDown = true;
+                if(!rainbowMode){
+                    if(shadingState){
+                        //prevents from painting
+                        isDown = false;
+                        lighteningState = false;
+                        rainbowMode = false;
+                        shading(gridArray[i])
+                    }
+                    else if(lighteningState){
+                        //prevents from painting 
+                        isDown = false;
+                        shadingState = false;
+                        rainbowMode = false;
+                        lightening(gridArray[i]);
+                    }
+                    else{
+                        gridArray[i].style.backgroundColor = primaryColor.value;
+                    }
                 }
                 else{
-                    gridArray[i].style.backgroundColor = primaryColor.value;
+                    gridArray[i].style.backgroundColor = `hsl(${randomColorNumber}, 100%, 65%)`;
                 }
-            }
-            else{
-                gridArray[i].style.backgroundColor = `hsl(${randomColorNumber}, 100%, 65%)`;
             }
         })
         gridArray[i].addEventListener("mouseup", ()=>{
@@ -191,11 +196,13 @@ function paintGrid (){
     }
 }
 paintGrid();
+
 //after cursor leaves stop painting
 let playContainer = document.querySelector(".playContainer");
 playContainer.addEventListener("mouseleave", ()=>{
     isDown = false;
 })
+
 //avoids deleting grid lines with grid size change
 let gridChanged = false;
 //select grid size
@@ -209,24 +216,23 @@ inputGridSize.addEventListener("change", (e)=>{
     gridSize = inputGridSize.value;
     createGrid(gridSize);
     setTimeout(paintGrid(), 500);
-            //????????????????????????
         //after grid size change, unpress grid line button
-        gridLineToggler(gridToggle);
-            //????????????????????????
+    gridOn = true;
+        gridToggle.classList.remove("btnOn");
 })
 
 //grid line toggler
 gridToggle.addEventListener("click", ()=>{
     //avoids deleting grid lines with grid size change
     gridChanged = false;
-    if(gridOn){
+    //toggles that button is on
+    if(gridOn && !gridChanged){
         gridToggle.classList.add("btnOn");
     }else{
         gridToggle.classList.remove("btnOn");
     }
     gridLineToggler(gridToggle);
 })
-
 
 shadingToggle.addEventListener("click", ()=>{
     shadingToggler(shadingToggle)
@@ -241,16 +247,15 @@ lighteningToggle.addEventListener("click", ()=>{
 function shading(square){
     let numberReg = /\d+/g;
     let color = square.style.backgroundColor.match(numberReg);
-    let percentage = 20;
     square.addEventListener("click", (element)=>{
         let numberArray = color.map((x) => parseInt(x))
         let currentR = numberArray[0]; 
         let currentG = numberArray[1];
         let currentB = numberArray[2];
         if(currentR !== 0 || currentG !== 0 || currentB !== 0){
-            currentR *= (1 - (percentage/100)) ; 
-            currentG *= (1 - (percentage/100)) ;
-            currentB *= (1 - (percentage/100)) ;
+            currentR *= (1 - (shadingFactor)); 
+            currentG *= (1 - (shadingFactor));
+            currentB *= (1 - (shadingFactor));
         }
         element.target.style.backgroundColor = `rgb(${currentR}, ${currentG}, ${currentB})`;
     })
@@ -260,17 +265,14 @@ function shading(square){
 function lightening(square){
     let numberReg = /\d+/g;
     let color = square.style.backgroundColor.match(numberReg);
-    let percentage = 20;
     square.addEventListener("click", (element)=>{
         let numberArray = color.map((x) => parseInt(x))
         let currentR = numberArray[0]; 
         let currentG = numberArray[1];
         let currentB = numberArray[2];
-        
-        let newR = currentR + (255 - currentR) * (percentage / 100);
-        let newG = currentG + (255 - currentG) * (percentage / 100);
-        let newB = currentB + (255 - currentB) * (percentage / 100);
-        
+        let newR = currentR + (255 - currentR) * (tintFactor);
+        let newG = currentG + (255 - currentG) * (tintFactor);
+        let newB = currentB + (255 - currentB) * (tintFactor);
         element.target.style.backgroundColor = `rgb(${newR}, ${newG}, ${newB})`;
     })
 }

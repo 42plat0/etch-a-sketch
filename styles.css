@@ -1,37 +1,111 @@
+@font-face {
+    font-family: 'Glitch Goblin';
+    src: url('./font/glitch-goblin/GlitchGoblin.eot');
+    src: url('./font/glitch-goblin/GlitchGoblin.eot?#iefix') format('embedded-opentype'),
+        url('./font/glitch-goblin/GlitchGoblin.woff2') format('woff2'),
+        url('./font/glitch-goblin/GlitchGoblin.woff') format('woff'),
+        url('./font/glitch-goblin/GlitchGoblin.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+/* button hover effect */
+@keyframes FadeIn{
+    from{
+        background-color: #091833;
+        color:  #33DDe7;
+    }
+    to{
+        background-color: 	#33DDe7;
+        color: black;
+    }
+}
 *{
     margin: 0;
     padding: 0;
-    color: red;
+    color:  #33DDe7;
+    font-family: 'Glitch Goblin';
 }
 html, body {
     height:100%;
 }
 .mainContainer{
-    background-color: salmon;
+    background-color: #091833;
 }
 
 .header{
     width: 100%;
     height: 100px;
-    border: 3px solid grey;
     margin: auto 0 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+#primaryPaintColor,
+#backgroundPaintColor{
+    height: 40px;
+}
 .header p{
-   font-size: 30px;
+   font-size: 40px;
    color:white;
 }
+
 .panelControls{
-    margin: 20px;
-    padding: 10px;
+    margin: 12px;
+    padding: 8px;
+    font-size: 18px;
+}
+button{
+    border-radius: 5px;
+    background-color: #091833;
+    border: none;
+}
+
+button:hover{
+    animation: FadeIn 0.35s ease-in-out forwards;
+}
+/* grid size button */
+.panelControls:nth-child(7){
+    margin-top: 40px;
+}
+input[type="range"]{
+    align-self: center;
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #053a5f;
+    height: 0.5rem;
+  }
+  /******** Firefox ********/
+input[type="range"]::-moz-range-track {
+    background: #053a5f;
+    height: 0.5rem;
+}
+/***** Thumb Styles *****/
+/***** Chrome, Safari, Opera, and Edge Chromium *****/
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    margin-top: -12px; /* Centers thumb on the track */
+    background-color: #5cd5eb;
+    height: 2rem;
+    width: 1rem;    
+ }
+ /***** Thumb Styles *****/
+/***** Firefox *****/
+input[type="range"]::-moz-range-thumb {
+    border: none; /*Removes extra border that FF applies*/
+    background-color: #5cd5eb;
+    height: 1.2rem;
+    width: 1.2rem;
 }
 .panel{
     width: 300px;
-    height: 700px;
+    height: 600px;
     display: flex;
-    border: 3px solid grey;
     flex-direction: column;
 }
 .childContainer{
@@ -50,7 +124,6 @@ html, body {
 .playContainer{
     height: 600px;
     width: 600px;
-    border: 3px solid grey;
     display: flex;
 }
 .gridContainer{
@@ -58,6 +131,7 @@ html, body {
     width: inherit;
     display: flex;
     flex-wrap: wrap;
+    background-color: #d1f7ff;
 }
 .gridSquare{
     flex-grow: 1;
@@ -71,17 +145,6 @@ html, body {
     margin: auto;
     margin-left: 20px;
 }
-.colorPicker > button{
-    
-    border: none;
-    cursor: pointer;
-        appearance: none;
-        background-color: inherit;
-}
-.colorPicker > button > img{
-    width: 20px;
-    height: 20px;
-}
 .colorPicker{
     display:flex;
     justify-content: space-between;
@@ -93,9 +156,9 @@ html, body {
     margin-top: 0;
 }
 .gridOn{
-    border: 0.5px solid gray;
+    border: 1px solid #d1f7ff;
+    border-radius: 1px;
 }
-
 .gridSquareColorChange{
     background-color: white;
 }
@@ -107,5 +170,19 @@ html, body {
     -ms-user-select: none;
 }
 .btnOn{
-    background-color: black;
+    background-color:#0abdc6;
+    color: black;
+}
+.btnOn:hover{
+    -webkit-animation: none;
+  -moz-animation: none;
+  -o-animation: none;
+  animation: none;
+}
+
+.playContainer,
+.header,
+.panel{
+    border-radius: 10px;
+    border: 3px solid #0abdc6;
 }
