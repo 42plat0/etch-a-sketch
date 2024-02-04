@@ -16,8 +16,8 @@ let gridWidth = gridContainer.clientWidth
 let gridSquare;
 
 //shading and tinting factors - 1st number
-const shadingFactor = 30 / 100;
-const tintFactor = 30 / 100;
+const shadingFactor = 10 / 100;
+const tintFactor = 10 / 100;
 //mouse button[0] is down
 let isDown = false;
 
